@@ -66,7 +66,12 @@ class _DicePageState extends State<DicePage> {
                   // foreground
                 ),
                 onPressed: () {
-                  setState(() => leftDiceNumber = randomNumber());
+                  setState(
+                    () => leftDiceNumber = randomNumber(),
+                  );
+                  setState(
+                    () => rightDiceNumber = randomNumbe2(),
+                  );
                 },
                 child: Text('jeter le dé 1'),
               ),
