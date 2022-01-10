@@ -70,7 +70,7 @@ class _DicePageState extends State<DicePage> {
                     () => leftDiceNumber = randomNumber(),
                   );
                   setState(
-                    () => rightDiceNumber = randomNumbe2(),
+                    () => rightDiceNumber = randomNumber(),
                   );
                 },
                 child: Text('jeter le dé 1'),
@@ -98,7 +98,12 @@ class _DicePageState extends State<DicePage> {
                   // foreground
                 ),
                 onPressed: () {
-                  setState(() => rightDiceNumber = randomNumbe2());
+                  setState(
+                    () => leftDiceNumber = randomNumber(),
+                  );
+                  setState(
+                    () => rightDiceNumber = leftDiceNumber,
+                  );
                 },
                 child: Text('jeter le dé 2'),
               ),
