@@ -33,7 +33,7 @@ class _DicePageState extends State<DicePage> {
     return random;
   }
 
-  int randomNumbe2() {
+  int randomNumber2() {
     int random2 = Random().nextInt(6) + 1; //1000 is MAX value
     //generate random number below 1000
     return random2;
@@ -51,29 +51,27 @@ class _DicePageState extends State<DicePage> {
               Container(
                 padding: EdgeInsets.all(16),
                 child: Expanded(
-                  child: Image.asset(
-                    'images/dice$leftDiceNumber.png',
-                    width: 250,
-                    height: 250,
+                  child: TextButton(
+                    style: TextButton.styleFrom(
+                      primary: Colors.blueGrey,
+                      elevation: 10,
+                      // foreground
+                    ),
+                    onPressed: () {
+                      setState(
+                        () => leftDiceNumber = randomNumber(),
+                      );
+                      setState(
+                        () => rightDiceNumber = randomNumber(),
+                      );
+                    },
+                    child: Image.asset(
+                      'images/dice$leftDiceNumber.png',
+                      width: 250,
+                      height: 250,
+                    ),
                   ),
                 ),
-              ),
-              TextButton(
-                style: TextButton.styleFrom(
-                  primary: Colors.blueGrey,
-                  backgroundColor: Colors.black,
-                  elevation: 10,
-                  // foreground
-                ),
-                onPressed: () {
-                  setState(
-                    () => leftDiceNumber = randomNumber(),
-                  );
-                  setState(
-                    () => rightDiceNumber = randomNumber(),
-                  );
-                },
-                child: Text('jeter le dé 1'),
               ),
             ],
           ),
@@ -83,29 +81,27 @@ class _DicePageState extends State<DicePage> {
               Container(
                 padding: EdgeInsets.all(16),
                 child: Expanded(
-                  child: Image.asset(
-                    'images/dice$rightDiceNumber.png',
-                    width: 250,
-                    height: 250,
+                  child: TextButton(
+                    style: TextButton.styleFrom(
+                      primary: Colors.blueGrey,
+                      elevation: 10,
+                      // foreground
+                    ),
+                    onPressed: () {
+                      setState(
+                        () => leftDiceNumber = randomNumber(),
+                      );
+                      setState(
+                        () => rightDiceNumber = leftDiceNumber,
+                      );
+                    },
+                    child: Image.asset(
+                      'images/dice$rightDiceNumber.png',
+                      width: 250,
+                      height: 250,
+                    ),
                   ),
                 ),
-              ),
-              TextButton(
-                style: TextButton.styleFrom(
-                  primary: Colors.blueGrey,
-                  backgroundColor: Colors.black,
-                  elevation: 10,
-                  // foreground
-                ),
-                onPressed: () {
-                  setState(
-                    () => leftDiceNumber = randomNumber(),
-                  );
-                  setState(
-                    () => rightDiceNumber = leftDiceNumber,
-                  );
-                },
-                child: Text('jeter le dé 2'),
               ),
             ],
           ),
