@@ -20,19 +20,26 @@ class DicePage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Center(
       child: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Expanded(
-            child: Image.asset(
-              'images/dice1.png',
-              width: 250,
-              height: 250,
+          Container(
+            padding: EdgeInsets.all(16),
+            child: Expanded(
+              child: Image.asset(
+                'images/dice1.png',
+                width: 250,
+                height: 250,
+              ),
             ),
           ),
-          Expanded(
-            child: Image.asset(
-              'images/dice1.png',
-              width: 250,
-              height: 250,
+          Container(
+            padding: EdgeInsets.all(16),
+            child: Expanded(
+              child: Image.asset(
+                'images/dice1.png',
+                width: 250,
+                height: 250,
+              ),
             ),
           ),
         ],
