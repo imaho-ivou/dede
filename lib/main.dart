@@ -15,6 +15,8 @@ void main() {
   );
 }
 
+var leftDiceNumber = 5;
+
 class DicePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -26,7 +28,7 @@ class DicePage extends StatelessWidget {
             padding: EdgeInsets.all(16),
             child: Expanded(
               child: Image.asset(
-                'images/dice1.png',
+                'images/dice$leftDiceNumber.png',
                 width: 250,
                 height: 250,
               ),
