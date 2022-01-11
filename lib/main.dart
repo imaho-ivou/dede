@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'dart:math';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
 
 void main() {
   return runApp(
@@ -27,16 +29,31 @@ class _DicePageState extends State<DicePage> {
   int leftDiceNumber = 5;
   int rightDiceNumber = 1;
 
-  int randomNumber() {
-    int random = Random().nextInt(6) + 1; //1000 is MAX value
-    //generate random number below 1000
-    return random;
+  void randomNumber() {
+    int random = Random().nextInt(6) + 1;
+    int random2 = Random().nextInt(6) + 1;
+    setState(
+      () => leftDiceNumber = random,
+    );
+    setState(
+      () => rightDiceNumber = random2,
+    );
   }
 
-  int randomNumber2() {
-    int random2 = Random().nextInt(6) + 1; //1000 is MAX value
-    //generate random number below 1000
-    return random2;
+  _makeGetRequest() async {
+    var headers = {'Content-Type': 'application/json'};
+    var request = http.Request(
+        'POST', Uri.parse('http://localhost/php_exo_des/traitement.php'));
+    request.body = json.encode({"nom": "lol", "resultat": 8});
+    request.headers.addAll(headers);
+
+    http.StreamedResponse response = await request.send();
+
+    if (response.statusCode == 200) {
+      print(await response.stream.bytesToString());
+    } else {
+      print(response.reasonPhrase);
+    }
   }
 
   @override
@@ -58,12 +75,7 @@ class _DicePageState extends State<DicePage> {
                       // foreground
                     ),
                     onPressed: () {
-                      setState(
-                        () => leftDiceNumber = randomNumber(),
-                      );
-                      setState(
-                        () => rightDiceNumber = randomNumber(),
-                      );
+                      randomNumber();
                     },
                     child: Image.asset(
                       'images/dice$leftDiceNumber.png',
@@ -88,12 +100,7 @@ class _DicePageState extends State<DicePage> {
                       // foreground
                     ),
                     onPressed: () {
-                      setState(
-                        () => leftDiceNumber = randomNumber(),
-                      );
-                      setState(
-                        () => rightDiceNumber = leftDiceNumber,
-                      );
+                      randomNumber();
                     },
                     child: Image.asset(
                       'images/dice$rightDiceNumber.png',
