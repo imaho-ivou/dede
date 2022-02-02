@@ -3,14 +3,18 @@ import 'dart:math';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
+import 'components/de.dart';
+import 'components/input.dart';
+
 void main() {
   return runApp(
     MaterialApp(
+      debugShowCheckedModeBanner: false,
       home: Scaffold(
-        backgroundColor: Colors.red,
+        backgroundColor: Colors.blue,
         appBar: AppBar(
           title: Text('Dédé'),
-          backgroundColor: Colors.red,
+          backgroundColor: Colors.blue,
         ),
         body: DicePage(),
       ),
@@ -19,14 +23,12 @@ void main() {
 }
 
 class DicePage extends StatefulWidget {
-  const DicePage({Key? key}) : super(key: key);
-
   @override
   _DicePageState createState() => _DicePageState();
 }
 
 class _DicePageState extends State<DicePage> {
-  int leftDiceNumber = 5;
+  int leftDiceNumber = 1;
   int rightDiceNumber = 1;
 
   void randomNumber() {
@@ -40,11 +42,14 @@ class _DicePageState extends State<DicePage> {
     );
   }
 
-  _makeGetRequest() async {
+  makeGetRequest() async {
     var headers = {'Content-Type': 'application/json'};
     var request = http.Request(
-        'POST', Uri.parse('http://localhost/php_exo_des/traitement.php'));
-    request.body = json.encode({"nom": "lol", "resultat": 8});
+        'POST', Uri.parse('http://localhost/apitest/public/api/dedes'));
+    request.body = json.encode({
+      "pseudo": controller_username.text,
+      "score": leftDiceNumber + rightDiceNumber
+    });
     request.headers.addAll(headers);
 
     http.StreamedResponse response = await request.send();
@@ -56,62 +61,59 @@ class _DicePageState extends State<DicePage> {
     }
   }
 
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+  TextEditingController controller_username = TextEditingController();
   @override
   Widget build(BuildContext context) {
     return Center(
-      child: Row(
+      child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Column(
+          Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Container(
-                padding: EdgeInsets.all(16),
-                child: Expanded(
-                  child: TextButton(
-                    style: TextButton.styleFrom(
-                      primary: Colors.blueGrey,
-                      elevation: 10,
-                      // foreground
+              de(leftDiceNumber: leftDiceNumber),
+              de(leftDiceNumber: rightDiceNumber),
+            ],
+          ),
+          Form(
+            key: _formKey,
+            child: Column(
+              children: [
+                Center(
+                  child: input(controller_username: controller_username),
+                ),
+                Container(
+                  width: 250,
+                  height: 50,
+                  decoration: BoxDecoration(),
+                  child: ElevatedButton(
+                    style: ButtonStyle(
+                      backgroundColor:
+                          MaterialStateProperty.all<Color>(Colors.white),
+                      shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                        RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(30.0),
+                          side: BorderSide(color: Colors.lightBlue),
+                        ),
+                      ),
                     ),
                     onPressed: () {
-                      randomNumber();
+                      if (_formKey.currentState!.validate()) {
+                        randomNumber();
+                        makeGetRequest();
+                        controller_username.text = '';
+                      }
                     },
-                    child: Image.asset(
-                      'images/dice$leftDiceNumber.png',
-                      width: 250,
-                      height: 250,
+                    child: Text(
+                      'Envoyer resultat'.toUpperCase(),
+                      style: TextStyle(color: Colors.black),
                     ),
                   ),
                 ),
-              ),
-            ],
-          ),
-          Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Container(
-                padding: EdgeInsets.all(16),
-                child: Expanded(
-                  child: TextButton(
-                    style: TextButton.styleFrom(
-                      primary: Colors.blueGrey,
-                      elevation: 10,
-                      // foreground
-                    ),
-                    onPressed: () {
-                      randomNumber();
-                    },
-                    child: Image.asset(
-                      'images/dice$rightDiceNumber.png',
-                      width: 250,
-                      height: 250,
-                    ),
-                  ),
-                ),
-              ),
-            ],
-          ),
+              ],
+            ),
+          )
         ],
       ),
     );
